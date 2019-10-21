@@ -1,0 +1,7 @@
+{
+  "**/*.+(js|jsx|css|less|scss|ts|tsx|md)": [
+    "eslint --fix --cache --format=pretty",
+    "prettier --write",
+    "git add"
+  ]
+}
