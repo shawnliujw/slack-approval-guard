@@ -83,7 +83,6 @@ program
   .action(async function(projectName, parentCommand) {
     try {
       const options = parentCommand.parent;
-
       await register(projectName, options);
       let errors = 0;
 
