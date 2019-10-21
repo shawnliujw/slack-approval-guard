@@ -5,7 +5,8 @@
   "main": "src/check.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write --config ./.prettierrc './src/*.js'"
+    "format": "prettier --write --config ./.prettierrc './src/*.js'",
+    "eslint": "./node_modules/.bin/eslint  ./src/*.js"
   },
   "repository": {
     "type": "git",
