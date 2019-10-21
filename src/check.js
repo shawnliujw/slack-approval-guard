@@ -17,7 +17,7 @@ const register = async (projectName, options) => {
       'author',
       'commitTitle',
       'commitId',
-      'approvals'
+      'assignee'
     ]);
     json.project = projectName;
     console.log(chalk.green(`Registry approval process to: ${options.serverURL}/registry`));
@@ -80,7 +80,7 @@ program
   .requiredOption('-s, --serverURL <string>', 'the approval server URL')
   .option('-E, --expire <number>', 'expire time in second, default is 30 minutes', 1800)
   .option('-i, --interval <number>', 'the interval to check the result', 3)
-  .option('-v, --approvals <number>', 'at least need  how many approvals, default is 1', 1)
+  .option('-v, --assignee <string>', 'the specific assignee， if not specify, anybody in the slack group can approve ', '')
   .option('-r, --retry <number>', 'retry times when error', 10);
 program
   .command('setup <projectName>')
