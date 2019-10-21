@@ -1,6 +1,6 @@
 {
   "src/**/*.{js,jsx}": [
-    "./node_modules/.bin/eslint --fix --cache --format=pretty",
+    "./node_modules/.bin/eslint --fix",
     "prettier --write",
     "git add"
   ]

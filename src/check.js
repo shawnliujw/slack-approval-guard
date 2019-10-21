@@ -20,7 +20,7 @@ const register = async (projectName, options) => {
     ]);
     json.project = projectName;
     console.log(chalk.green(`Registry approval process to: ${options.serverURL}/registry`));
-    const response = await rp({
+    await rp({
       method: 'POST',
       uri: `${options.serverURL}/registry`,
       body: json,
@@ -85,7 +85,6 @@ program
       const options = parentCommand.parent;
       await register(projectName, options);
       let errors = 0;
-
       console.log(chalk.green(`Ready to check approval status every ${options.interval} seconds, progress will expire in ${options.expire}`));
       for (let i = 0; i < options.expire; i += 3) {
         if (errors > options.retry) {
