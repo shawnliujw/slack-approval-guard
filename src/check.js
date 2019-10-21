@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const program = require('commander');
 const Promise = require('bluebird');
 const rp = require('request-promise');
@@ -28,7 +29,11 @@ const register = async (projectName, options) => {
     });
     console.log(chalk.green('Success to register, will check response...'));
   } catch (e) {
-    console.log(e);
+    if (e.statusCode) {
+      console.error(`${e.message}`);
+    } else {
+      console.error(e);
+    }
     throw new Error('failed to register approval process');
   }
 };
