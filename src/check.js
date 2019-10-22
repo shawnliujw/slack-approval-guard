@@ -5,7 +5,7 @@ const rp = require('request-promise');
 const _ = require('lodash');
 const chalk = require('chalk');
 
-const register = async (projectName, options) => {
+const register = async (projectName, options, times) => {
   try {
     const json = _.pick(options, [
       'namespace',
@@ -21,14 +21,19 @@ const register = async (projectName, options) => {
     ]);
     json.project = projectName;
     console.log(chalk.green(`Registry approval process to: ${options.serverURL}/registry`));
-    await rp({
+    const result = await rp({
       method: 'POST',
       uri: `${options.serverURL}/registry`,
       body: json,
       json: true
     });
     console.log(chalk.green('Success to register, will check response...'));
+    console.log(chalk.green(`This application has been sent to Slack group: ${result.slackChannel}`));
   } catch (e) {
+    if (times > 0) {
+      times--;
+      return await register(projectName, options, times);
+    }
     if (e.statusCode) {
       console.error(`${e.message}`);
     } else {
@@ -92,7 +97,7 @@ program
   .action(async function(projectName, parentCommand) {
     try {
       const options = parentCommand.parent;
-      await register(projectName, options);
+      await register(projectName, options, options.retry);
       let errors = 0;
       console.log(chalk.green(`Ready to check approval status every ${options.interval} seconds, progress will expire in ${options.expire}`));
       for (let i = 0; i < options.expire; i += 3) {
