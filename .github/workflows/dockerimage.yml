@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'src/**.js'
+      - 'Dockerfile'
+      - 'package.json'
       - '.github/workflows/**.yml'
       - '.github/workflows/**.yaml'
 jobs:
