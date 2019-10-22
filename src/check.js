@@ -80,7 +80,11 @@ program
   .requiredOption('-s, --serverURL <string>', 'the approval server URL')
   .option('-E, --expire <number>', 'expire time in second, default is 30 minutes', 1800)
   .option('-i, --interval <number>', 'the interval to check the result', 3)
-  .option('-v, --assignee <string>', 'the specific assignee， if not specify, anybody in the slack group can approve ', '')
+  .option(
+    '-v, --assignee <string>',
+    'the specific assignee， if not specify, anybody in the slack group can approve. format should be "<id>|[name],<id>|[name]" ',
+    ''
+  )
   .option('-r, --retry <number>', 'retry times when error', 10);
 program
   .command('setup <projectName>')
