@@ -20,8 +20,6 @@ const register = async (projectName, options, times) => {
       'assignee',
       'webhook'
     ]);
-    console.log('+++++++');
-    console.log(json);
     json.project = projectName;
     console.log(chalk.green(`Registry approval process to: ${options.serverURL}/registry`));
     const result = await rp({

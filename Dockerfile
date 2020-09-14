@@ -2,7 +2,7 @@ FROM shawnliu/kubectl-node:13-12
 MAINTAINER Shanw Liu <shawn.jw.liu@gmail.com>
 WORKDIR /app
 
-COPY package.json  ./
+COPY package.json yarn.lock  ./
 RUN yarn install
 
 FROM shawnliu/kubectl-node:13-12
