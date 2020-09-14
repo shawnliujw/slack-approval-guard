@@ -86,7 +86,7 @@ program
   .requiredOption('-c, --commitTitle <string>', 'the last commit title')
   .requiredOption('-C, --commitId <string>', 'the last commit id')
   .requiredOption('-s, --serverURL <string>', 'the approval server URL')
-  .option('-w, --webhook <boolean>', 'whether its flagger promotion webhook')
+  .option('-w, --webhook <string>', 'webhook type: slack or gitlab')
   .option('-E, --expire <number>', 'expire time in second, default is 30 minutes', 1800)
   .option('-i, --interval <number>', 'the interval to check the result', 3)
   .option(
@@ -102,9 +102,9 @@ program
     try {
       const options = parentCommand.parent;
       await register(projectName, options, options.retry);
-      if (options.webhook === 'true') {
+      if (options.webhook) {
         console.log(
-          chalk.green('flagger confirm-promotion approval has been send to slack, deployment will not be promoted to production util click OK in slack')
+          chalk.green(`flagger confirm-promotion approval has been send to ${options.webhook}, deployment will not be promoted to production util click OK in slack or approved in gitlab`)
         );
       } else {
         let errors = 0;
