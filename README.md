@@ -31,3 +31,6 @@ deploy_prod:
 
 * Rejected  
 ![Rejected](./images/rejected.png)
+
+
+guard setup 'proejctName' -n 'namespace' -e 'env' -P 'projectURL' -p '$CI_PIPELINE_ID' -b '$CI_COMMIT_REF_NAME' -a '$GITLAB_USER_NAME' -c '$CI_COMMIT_TITLE' -C '$CI_COMMIT_SHA' -s 'http://slack.example.com/approval'

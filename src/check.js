@@ -17,8 +17,11 @@ const register = async (projectName, options, times) => {
       'author',
       'commitTitle',
       'commitId',
-      'assignee'
+      'assignee',
+      'webhook'
     ]);
+    console.log('+++++++');
+    console.log(json);
     json.project = projectName;
     console.log(chalk.green(`Registry approval process to: ${options.serverURL}/registry`));
     const result = await rp({
@@ -83,6 +86,7 @@ program
   .requiredOption('-c, --commitTitle <string>', 'the last commit title')
   .requiredOption('-C, --commitId <string>', 'the last commit id')
   .requiredOption('-s, --serverURL <string>', 'the approval server URL')
+  .option('-w, --webhook <boolean>', 'whether its flagger promotion webhook')
   .option('-E, --expire <number>', 'expire time in second, default is 30 minutes', 1800)
   .option('-i, --interval <number>', 'the interval to check the result', 3)
   .option(
@@ -98,21 +102,28 @@ program
     try {
       const options = parentCommand.parent;
       await register(projectName, options, options.retry);
-      let errors = 0;
-      console.log(chalk.green(`Ready to check approval status every ${options.interval} seconds, progress will expire in ${options.expire}`));
-      for (let i = 0; i < options.expire; i += 3) {
-        if (errors > options.retry) {
-          throw new Error(`errors reached the max times: ${options.retry}`);
+      if (options.webhook === 'true') {
+        console.log(
+          chalk.green('flagger confirm-promotion approval has been send to slack, deployment will not be promoted to production util click OK in slack')
+        );
+      } else {
+        let errors = 0;
+        console.log(chalk.green(`Ready to check approval status every ${options.interval} seconds, progress will expire in ${options.expire}`));
+        for (let i = 0; i < options.expire; i += 3) {
+          if (errors > options.retry) {
+            throw new Error(`errors reached the max times: ${options.retry}`);
+          }
+          try {
+            await check(projectName, options);
+          } catch (e) {
+            console.log(chalk.red(e.message));
+            errors++;
+          }
+          await Promise.delay(options.interval * 1000);
         }
-        try {
-          await check(projectName, options);
-        } catch (e) {
-          console.log(chalk.red(e.message));
-          errors++;
-        }
-        await Promise.delay(options.interval * 1000);
+        console.log(chalk.red('Approval timeout....'));
       }
-      console.log(chalk.red('Approval timeout....'));
+
       process.exit(-1);
     } catch (e) {
       console.log(chalk.red(e.message));
