@@ -104,6 +104,7 @@ program
         console.log(
           chalk.green(`flagger confirm-promotion approval has been send to ${options.webhook}, deployment will not be promoted to production util click OK in slack or approved in gitlab`)
         );
+        process.exit(0);
       } else {
         let errors = 0;
         console.log(chalk.green(`Ready to check approval status every ${options.interval} seconds, progress will expire in ${options.expire}`));
